@@ -26,6 +26,7 @@ jobs:
     - name: Build Docker image (no cache)
       run: |
         cd Dev/Camera
+        ls -la
         docker build --no-cache -t webcam-test-image -f Dockerfile .
 
     - name: Run tests in Docker container
