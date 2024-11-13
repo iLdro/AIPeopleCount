@@ -1,8 +1,7 @@
-# Dockerfile
 FROM python:3.9-slim
 
-RUN
-    apt-get update && \
+# Update apt-get and install dependencies
+RUN apt-get update && \
     apt-get install -y libgl1-mesa-glx libsm6 libxext6 libxrender-dev && \
     pip install opencv-python-headless
 
