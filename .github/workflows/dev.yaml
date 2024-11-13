@@ -23,6 +23,11 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
+    - name: Verify file paths
+      run: |
+        ls Dev/Camera
+        ls Dev/Camera/Test
+
     - name: Build Docker image
       run: |
         docker build -t webcam-test-image -f Dockerfile.Camera .
