@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 # Copy the application and test files
 COPY Dev/Camera/cameraFlux.py /app/cameraFlux.py
-COPY Dev/Camera/Test/cameraTest.py /app/Test/cameraTest.py
+COPY Test/cameraTest.py /app/Test/cameraTest.py
 
 WORKDIR /app
 
