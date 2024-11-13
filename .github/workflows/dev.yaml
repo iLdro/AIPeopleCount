@@ -24,7 +24,9 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Build Docker image
-      run: docker build -t webcam-test-image -f Dev/Camera/Dockerfile Dev/Camera
+      run: |
+        cd Dev/Camera
+        docker build -t webcam-test-image -f Dockerfile .
 
     - name: Run tests in Docker container
       run: docker run --rm webcam-test-image
