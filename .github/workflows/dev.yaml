@@ -25,7 +25,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build --no-cache -t webcam-test-image -f Dev/Camera/Dockerfile Dev/Camera
+        docker build --no-cache -t webcam-test-image -f Dockerfile Dockerfile.Camera
 
     - name: Run tests in Docker container
       run: docker run --rm webcam-test-image
