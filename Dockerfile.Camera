@@ -11,7 +11,8 @@ WORKDIR /Dev/Camera
 
 # Copy the application and test files
 COPY cameraFlux.py .
-COPY Test/cameraTest.py .
+
+COPY /Test/cameraTest.py .
 
 
 # Run the tests when the container starts
