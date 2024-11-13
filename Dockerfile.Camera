@@ -5,7 +5,7 @@ RUN apt-get update && \
     apt-get install -y libgl1-mesa-glx libsm6 libxext6 libxrender-dev && \
     pip install opencv-python-headless
 
-# Copy the application and test files (relative to the context)
+# Copy the application and test files
 COPY Dev/Camera/cameraFlux.py /app/cameraFlux.py
 COPY Dev/Camera/Test/cameraTest.py /app/Test/cameraTest.py
 
