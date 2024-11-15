@@ -11,5 +11,5 @@ WORKDIR /app
 # Copy application and test files relative to the build context
 COPY . . /app
 
-# Set the default command to run tests
+# Set the default command to run tests add the * to run note that somme test CANNOT BE RUNNED BECAUSE OF THE CA%ERA
 CMD ["python", "-m", "unittest", "discover", "-s", "Test", "-p", "*.py"]
