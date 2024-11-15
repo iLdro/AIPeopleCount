@@ -5,7 +5,7 @@ RUN apt-get update && \
     apt-get install -y libgl1-mesa-glx libsm6 libxext6 libxrender-dev && \
     pip install opencv-python-headless
 
-WORKDIR /Dev/Camera
+WORKDIR /app
 
 # Update apt-get and install dependencies
 
@@ -14,6 +14,7 @@ COPY cameraFlux.py .
 
 COPY /Test/cameraTest.py .
 
+WORKDIR /Test
 
 # Run the tests when the container starts
 CMD ["python", "-m", "unittest", "Test/cameraTest.py"]
