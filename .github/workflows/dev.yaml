@@ -1,0 +1,36 @@
+name: Test Webcam Script with Docker and Unittest
+
+on:
+  push:
+    branches:
+      - master
+      - preprod
+      - hotfix
+      - webcam
+  pull_request:
+    branches:
+      - master
+      - preprod
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Verify file paths
+      run: |
+        ls Dev/Camera
+        ls Dev/Camera/Test
+
+    - name: Build Docker image
+      run: |
+        docker build -t webcam-test-image ./Dev/Camera
+
+    - name: Run tests in Docker container
+      run: docker run --rm webcam-test-image
