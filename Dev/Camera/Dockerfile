@@ -12,4 +12,4 @@ WORKDIR /app
 COPY . . /app
 
 # Set the default command to run tests
-CMD ["python", "-m", "unittest", "discover", "-s", "Test", "-p", ".py"]
+CMD ["python", "-m", "unittest", "discover", "-s", "Test", "-p", "*.py"]
