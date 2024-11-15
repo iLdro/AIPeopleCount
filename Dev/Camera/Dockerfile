@@ -9,7 +9,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy application and test files relative to the build context
-COPY . /app
+COPY . . /app
 
 # Set the default command to run tests
-CMD ["python", "-m", "unittest", "discover", "-s", "/app/Test"]
+CMD ["python", "-m", "unittest", "discover", "-s", "Test", "-p", ".py"]
