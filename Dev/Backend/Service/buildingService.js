@@ -29,15 +29,27 @@ async function AddingPeopleInBasement(cameraId, buildingId) {
     return people;
 }
 
-
 async function AddBuilding(buildingId, cameraId) {
-    let building
-    let people = 0;
-    let date = new Date();
-    building = new Building({ buildingId: buildingId, counter: people, cameraId: cameraId, lastUpdated: date });
-    console.log("Building: ", building);
-    await building.save();
-    return building;
+    try {
+        let building;
+        let people = 0;
+        let date = new Date();
+
+        building = new Building({
+            buildingId: buildingId,
+            counter: people,
+            cameraId: cameraId,
+            lastUpdated: date,
+        });
+
+        console.log("Building: ", building);
+        await building.save(); // Save the document
+        console.log("Building saved successfully!");
+        return building;
+    } catch (error) {
+        console.error('Error during building save:', error.message);
+        throw error;
+    }
 }
 
 
