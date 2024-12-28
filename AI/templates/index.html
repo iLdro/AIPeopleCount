@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détection de personnes et mouvements</title>
+</head>
+<body>
+    <h1>Détection de personnes et mouvements</h1>
+    <div>
+        <img src="{{ url_for('video_feed') }}" width="720" height="480">
+    </div>
+    <div>
+        <form action="{{ url_for('index') }}" method="post">
+            <button type="submit">Démarrer</button>
+        </form>
+    </div>
+    <div>
+        <form action="{{ url_for('index') }}" method="post">
+            <button type="submit">Arrêter</button>
+        </form>
+    </div>
+    <div>
+        <a> Pourquoi YOLOv8 est le modèle optimal pour cette tâche
+
+            Rapidité : YOLOv8 est conçu pour des performances optimisées sur des images ou des flux vidéo, ce qui le rend parfait pour une diffusion en temps réel.
+            Précision améliorée : Par rapport aux anciennes versions de YOLO, YOLOv8 atteint une précision plus élevée grâce à son architecture optimisée et ses méthodes d’entraînement avancées.
+            Polyvalence : Avec sa compatibilité avec PyTorch et ONNX, YOLOv8 peut être facilement exporté pour une utilisation dans des environnements variés, comme des navigateurs ou des applications mobiles.</a>
+        <a>Pourquoi utiliser YOLOv8 Nano (YOLOv8n) et non une autre version de YOLO ?
+
+            Rapidité et légèreté :
+                YOLOv8n est une version légère de la famille YOLOv8. Elle est conçue pour être rapide tout en maintenant une précision raisonnable. Elle est particulièrement adaptée aux applications en temps réel où la fréquence d’images (FPS) est importante.
+                Les versions plus grandes de YOLOv8 (comme YOLOv8s, YOLOv8m, ou YOLOv8l) fournissent une précision légèrement meilleure mais au prix d'une vitesse plus lente et de ressources matérielles accrues. Cela peut entraîner des latences dans le flux vidéo en temps réel, surtout sur des processeurs limités.
+        
+            Bonne précision pour les objets de taille moyenne à grande :
+                YOLOv8 Nano, même dans sa version réduite, est capable de bien détecter des objets comme des personnes dans un environnement classique de surveillance ou de comptage, où les personnes apparaissent de taille suffisante dans le cadre.
+                Pour une tâche de comptage de personnes, la précision de YOLOv8n est souvent largement suffisante, ce qui permet d'atteindre des résultats précis sans nécessiter des versions de modèle plus complexes.
+        
+            Architecture améliorée pour la détection en temps réel :
+                YOLOv8 inclut des améliorations architecturales par rapport aux versions précédentes (comme YOLOv5) pour mieux gérer les détections en temps réel, notamment par l’optimisation des couches convolutionnelles et de la structure des ancres (anchors).
+                YOLOv8 utilise un format d'ancrage dynamique qui rend la détection plus efficace dans des environnements variés et permet d'atteindre une performance optimale sur des objets de tailles diverses.</a>
+    </div>
+    <div>
+        <a> Pourquoi OpenCV est le meilleur choix pour la détection de personnes et de mouvements
+
+            Facilité d’utilisation : OpenCV est une bibliothèque de vision par ordinateur très populaire qui offre une API simple et intuitive pour la détection d’objets.
+            Performances optimisées : OpenCV est conçu pour des performances optimales, ce qui le rend idéal pour des applications en temps réel comme la détection de personnes et de mouvements.
+            Compatibilité : OpenCV est compatible avec de nombreuses langues de programmation, y compris Python, C++ et Java, ce qui le rend accessible à un large public de développeurs.</a>
+    </div>
+    <div>
+        <a> Pourquoi Flask est le meilleur choix pour le déploiement de modèles de vision par ordinateur
+
+            Facilité d’utilisation : Flask est un framework web léger et facile à utiliser qui permet de créer rapidement des applications web.
+            Compatibilité : Flask est compatible avec de nombreuses bibliothèques Python populaires, comme NumPy et OpenCV, ce qui en fait un excellent choix pour le déploiement de modèles de vision par ordinateur.
+            Extensibilité : Flask offre de nombreuses extensions et plugins qui permettent d’ajouter des fonctionnalités supplémentaires à une application web, comme l’authentification utilisateur ou la gestion des sessions.</a>
+    </div>
+    
+</body>
+</html>
