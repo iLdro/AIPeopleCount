@@ -11,7 +11,7 @@ model = YOLO('yolov8n.pt')
 tracker = DeepSort(max_age=200, n_init=3, nn_budget=200, max_cosine_distance=0.2)
 
 def generate_frames():
-    cap = cv2.VideoCapture(r"AI\Normal_Videos023_x264.mp4")
+    cap = cv2.VideoCapture(r"data/Normal_Videos023_x264.mp4")
 
     entered_count = 0
     exited_count = 0
