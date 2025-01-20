@@ -7,7 +7,7 @@ from deep_sort_realtime.deepsort_tracker import DeepSort
 
 app = Flask(__name__)
 
-model = YOLO('yolo11n.pt')
+model = YOLO('yolov8n.pt')
  
 # Créer une instance de DeepSort
 tracker = DeepSort(
