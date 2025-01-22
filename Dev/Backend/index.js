@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
@@ -15,6 +17,8 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
+app.use('/building', routes)
+app.use('/camera', cameraRoutes)
 // Start server and connect to DB
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
@@ -23,5 +27,3 @@ app.listen(3000, () => {
     connectDB();
 });
 
-app.use('/building', routes)
-app.use('/camera', cameraRoutes)
