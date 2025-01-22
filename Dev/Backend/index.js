@@ -1,6 +1,7 @@
 const express = require("express");
 const { connectDB } = require("./Database/db.js"); // Import connectDB function from peopleService.js
 const routes = require("./routes/building.routes.js");
+const cameraRoutes = require("./routes/camera.route.js");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
@@ -23,3 +24,4 @@ app.listen(3000, () => {
 });
 
 app.use('/building', routes)
+app.use('/camera', cameraRoutes)
