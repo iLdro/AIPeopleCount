@@ -61,8 +61,17 @@ async function RemovingPeopleInBasement(cameraId, buildingId) {
 }
 
 async function getDistinctBuilding() {
-    let building = Building.find().distinct('buildingId');
-    return building;
+    try {
+        let buildings = await Building.find()
+            .distinct('buildingId')
+            .exec();
+
+        console.log('Distinct buildings:', buildings);
+        return buildings; // Return the result to the caller
+    } catch (error) {
+        console.error('Error getting the distinct building:', error);
+        return []; // Return an empty array in case of an error
+    }
 }
 
 
