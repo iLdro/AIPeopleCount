@@ -40,7 +40,7 @@ async function AddingPeopleInBasement(cameraId, buildingId) {
 async function RemovingPeopleInBasement(cameraId, buildingId) {
     console.log("Remove for building id:", buildingId);
     let people = 0;
-    let building = await Building.findOne({ buildingId }).sort({ lastUpdated: -1 });
+    let building = await Building.findOne({ buildingId }).sort({ lastUpdated: -1 }).exec();
     if (!building || building.counter <=0 ) {
         people = 0; // Set people count to 0 if it's a new basement
     } else if (building.counter > 0) {
