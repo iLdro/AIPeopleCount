@@ -97,7 +97,8 @@ def generate_frames():
             # Confirmer une entrée après le seuil
             if id_states[track_id]["frames_in"] == entry_threshold:
                 entered_count += 1
-                requests.post(base_url + addPeople + building, json={"cameraId": camera})                entry_points.append([x_center, y_center, 30])
+                requests.post(base_url + addPeople + building, json={"cameraId": camera})                
+                entry_points.append([x_center, y_center, 30])
                 print(f"ID {track_id}: Confirmed entered at ({x_center}, {y_center})")
 
             # Afficher l'ID
@@ -118,6 +119,7 @@ def generate_frames():
                                 y_center <= 10 or y_center >= frame_height - 10):
                             id_states[track_id]["state"] = "exited"
                             exited_count += 1
+                            print("removePeople")
                             requests.post(base_url + removePeople + building, json={"cameraId": camera})
                             exit_points.append([x_center, y_center, 30])  # Point rouge visible 2 secondes
                             print(f"ID {track_id}: Confirmed exited at ({x_center}, {y_center})")
