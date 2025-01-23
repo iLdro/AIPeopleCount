@@ -1,8 +1,13 @@
 const { Camera } = require('../Schema/camera');
 
-function CameraUpdate(cameraId, people) {
-    let camera = Camera.add({ cameraId: cameraId }, { actualOnCamera: people }, { lastUpdated: new Date() });
-    return camera;
+async function CameraUpdate(cameraId, people) {
+    let camera = new Camera({ cameraId: cameraId, actualOnCamera: people, lastUpdated: new Date() });
+    return await camera.save();
 }
 
-module.exports = { CameraUpdate };
+async function getCameraPeople(cameraId) {
+    let camera = await Camera.findOne({ cameraId: cameraId });
+    return camera ? camera.actualOnCamera : null;
+}
+
+module.exports = { CameraUpdate, getCameraPeople };
