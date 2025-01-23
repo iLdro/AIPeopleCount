@@ -2,6 +2,7 @@ from flask import Flask, render_template, Response
 import cv2
 import torch
 from ultralytics import YOLO
+import requests
 
 from deep_sort_realtime.deepsort_tracker import DeepSort
 
@@ -11,8 +12,8 @@ model = YOLO('yolov8n.pt')
  
 # Créer une instance de DeepSort
 tracker = DeepSort(
-    max_age=60,       # Nombre maximum de frames sans mise à jour avant qu'un objet soit supprimé
-    n_init=3,         # Nombre minimum de frames consécutives pour confirmer une détection
+    max_age=30,       # Nombre maximum de frames sans mise à jour avant qu'un objet soit supprimé
+    n_init=6,         # Nombre minimum de frames consécutives pour confirmer une détection
     max_iou_distance=0.9,  # Distance maximale IoU pour le matching
     max_cosine_distance=0.2,  # Distance cosinus pour la similarité des caractéristiques
     nn_budget=100,    # Taille maximale de la mémoire du classificateur
@@ -20,6 +21,20 @@ tracker = DeepSort(
 )
 
 trajectories = {}  # Dictionnaire pour stocker les trajectoires des objets
+
+base_url = "http://localhost:3000/"
+
+addPeople = "building/people/add/"
+removePeople = "building/people/remove/"
+
+peopleOnCamera = "camera/"
+
+building = "bat A/"
+
+camera = "camera1"
+
+rslt = requests.post(base_url + "building/list")
+print(rslt.content.decode())
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
@@ -82,7 +97,7 @@ def generate_frames():
             # Confirmer une entrée après le seuil
             if id_states[track_id]["frames_in"] == entry_threshold:
                 entered_count += 1
-                entry_points.append([x_center, y_center, 30])
+                requests.post(base_url + addPeople + building, json={"cameraId": camera})                entry_points.append([x_center, y_center, 30])
                 print(f"ID {track_id}: Confirmed entered at ({x_center}, {y_center})")
 
             # Afficher l'ID
@@ -103,6 +118,7 @@ def generate_frames():
                                 y_center <= 10 or y_center >= frame_height - 10):
                             id_states[track_id]["state"] = "exited"
                             exited_count += 1
+                            requests.post(base_url + removePeople + building, json={"cameraId": camera})
                             exit_points.append([x_center, y_center, 30])  # Point rouge visible 2 secondes
                             print(f"ID {track_id}: Confirmed exited at ({x_center}, {y_center})")
                     else:  # Supprimer l'ID si absent trop longtemps
