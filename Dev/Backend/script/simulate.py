@@ -27,10 +27,10 @@ for i in range(100):
     plusOrMinus = random.randint(0, 1)
     requests.post(base_url + peopleOnCamera + camera, json={"people": random.randint(0, 10)})
     # if plusOrMinus == 0:
-    print("add for batiment " + building)
-    call = requests.post(base_url + addPeople + building, json={"cameraId": camera})
+    # print("add for batiment " + building)
+    # call = requests.post(base_url + addPeople + building, json={"cameraId": camera})
     # else:
-    #     print("remove for batiment " + building)
-    #     requests.post(base_url + removePeople + building, json={"cameraId": camera})
+    print("remove for batiment " + building)
+    requests.post(base_url + removePeople + building, json={"cameraId": camera})
 
     time.sleep(0.5)

@@ -9,7 +9,7 @@ from deep_sort_realtime.deepsort_tracker import DeepSort
 app = Flask(__name__)
 
 model = YOLO('yolov8n.pt')
- 
+
 # Créer une instance de DeepSort
 tracker = DeepSort(
     max_age=30,       # Nombre maximum de frames sans mise à jour avant qu'un objet soit supprimé
@@ -38,7 +38,7 @@ print(rslt.content.decode())
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
-    
+
     entered_count = 0
     exited_count = 0
 
@@ -48,7 +48,7 @@ def generate_frames():
     exit_points = []  # Points de sortie [(x, y, frames_remaining)]
     entry_threshold = 10  # Frames pour confirmer une entrée
     exit_threshold = 15  # Frames pour confirmer une sortie
-    
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -97,7 +97,7 @@ def generate_frames():
             # Confirmer une entrée après le seuil
             if id_states[track_id]["frames_in"] == entry_threshold:
                 entered_count += 1
-                requests.post(base_url + addPeople + building, json={"cameraId": camera})                
+                requests.post(base_url + addPeople + building, json={"cameraId": camera})
                 entry_points.append([x_center, y_center, 30])
                 print(f"ID {track_id}: Confirmed entered at ({x_center}, {y_center})")
 
@@ -115,8 +115,7 @@ def generate_frames():
                         x_center, y_center = id_states[track_id]["last_position"]
 
                         # Vérifiez que l'objet est hors du cadre
-                        if (x_center <= 10 or x_center >= frame_width - 10 or
-                                y_center <= 10 or y_center >= frame_height - 10):
+                        if (  y_center <= 10 ):
                             id_states[track_id]["state"] = "exited"
                             exited_count += 1
                             print("removePeople")
