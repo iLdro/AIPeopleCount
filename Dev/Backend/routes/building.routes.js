@@ -17,7 +17,7 @@ myController.post('/people/add/:id', (req, res) => {
 });
 
 myController.post('/people/remove/:id', (req, res) => {
-    res.send(buildingService.AddingPeopleInBasement(req.body.cameraId, req.params.id)); //need to add the parameter
+    res.send(buildingService.RemovingPeopleInBasement(req.body.cameraId, req.params.id)); //need to add the parameter
 });
 
 myController.get('/list', async (req, res) => {
