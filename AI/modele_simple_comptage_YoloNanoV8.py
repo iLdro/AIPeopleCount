@@ -21,8 +21,7 @@ tracker = DeepSort(
 )
 
 # Constants for Entry/Exit Zones
-ENTER_EXIT_REGION = 0.2  # 20% of the frame width
-ROOM_REGION = 0.8  # 20% of the frame width
+TOP_REGION = 0.2  # 20% from the top of the frame
 
 # Tracking Data
 trajectories = {}
@@ -72,49 +71,49 @@ def generate_frames():
 
             track_id = track.track_id
             x1, y1, x2, y2 = map(int, track.to_tlbr())
-            x_center = (x1 + x2) // 2  # X-coordinate of the center
+            y_center = (y1 + y2) // 2  # Y-coordinate of the center
             current_ids.add(track_id)
 
             # Initialize trajectory for new IDs
             if track_id not in trajectories:
                 trajectories[track_id] = {
-                    "start_x": x_center,
-                    "current_x": x_center,
+                    "start_y": y_center,
+                    "current_y": y_center,
                 }
             else:
                 # Update current position
-                trajectories[track_id]["current_x"] = x_center
+                trajectories[track_id]["current_y"] = y_center
 
                 # Determine entry/exit based on movement
-                start_x = trajectories[track_id]["start_x"]
-                current_x = trajectories[track_id]["current_x"]
+                start_y = trajectories[track_id]["start_y"]
+                current_y = trajectories[track_id]["current_y"]
 
-                # Entry: From Left to Right
-                if start_x < frame_width * ENTER_EXIT_REGION and current_x > frame_width * ENTER_EXIT_REGION:
+                # Entry: From Top to Inside
+                if start_y < frame_height * TOP_REGION and current_y > frame_height * TOP_REGION:
                     entered_count += 1
                     requests.post(base_url + addPeople + building, json={"cameraId": camera})
-                    print(f"ID {track_id} entered from left.")
+                    print(f"ID {track_id} entered from top.")
                     del trajectories[track_id]  # Remove to prevent double counting
 
-                # Exit: From Right to Left
-                elif start_x > frame_width * ENTER_EXIT_REGION and current_x < frame_width * ENTER_EXIT_REGION:
+                # Exit: From Inside to Top
+                elif start_y > frame_height * TOP_REGION and current_y < frame_height * TOP_REGION:
                     exited_count += 1
                     requests.post(base_url + removePeople + building, json={"cameraId": camera})
-                    print(f"ID {track_id} exited to left.")
+                    print(f"ID {track_id} exited to top.")
                     del trajectories[track_id]  # Remove to prevent double counting
 
             # Display track ID and bounding box
             cv2.putText(frame, f"ID: {track_id}", (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 0, 0), 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
         # Remove stale IDs not present in the current frame
         for track_id in list(trajectories.keys()):
             if track_id not in current_ids:
                 del trajectories[track_id]
 
-        # Draw left and right region lines
-        cv2.line(frame, (int(frame_width * ENTER_EXIT_REGION), 0), 
-                 (int(frame_width * ENTER_EXIT_REGION), frame_height), (0, 255, 0), 2)  # Enter/Exit Region Line
+        # Draw top region line
+        cv2.line(frame, (0, int(frame_height * TOP_REGION)), 
+                 (frame_width, int(frame_height * TOP_REGION)), (0, 255, 0), 2)  # Top Region Line
 
         # Display Entry/Exit counts
         cv2.putText(frame, f"Entries: {entered_count}", (10, 50),
