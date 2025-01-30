@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response
 import cv2
+
 import torch
 from ultralytics import YOLO
 import requests
@@ -12,16 +13,16 @@ model = YOLO('yolov8n.pt')
 
 # Initialize DeepSort
 tracker = DeepSort(
-    max_age=30,
-    n_init=6,
+    max_age=0,
+    n_init=1,
     max_iou_distance=0.9,
     max_cosine_distance=0.2,
-    nn_budget=100,
+    nn_budget=50,  # Réduction pour accélérer les calculs
     override_track_class=None
 )
 
 # Constants for Entry/Exit Zones
-TOP_REGION = 0.2  # 20% from the top of the frame
+TOP_REGION = 0.4  # 20% from the top of the frame
 
 # Tracking Data
 trajectories = {}
@@ -39,9 +40,12 @@ rslt = requests.post(base_url + "building/list")
 print(rslt.content.decode())
 
 
+
+
 def generate_frames():
     global entered_count, exited_count
-    cap = cv2.VideoCapture(0)
+
+    cap = cv2.VideoCapture(1)
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
@@ -112,7 +116,7 @@ def generate_frames():
                 del trajectories[track_id]
 
         # Draw top region line
-        cv2.line(frame, (0, int(frame_height * TOP_REGION)), 
+        cv2.line(frame, (0, int(frame_height * TOP_REGION)),
                  (frame_width, int(frame_height * TOP_REGION)), (0, 255, 0), 2)  # Top Region Line
 
         # Display Entry/Exit counts
@@ -143,7 +147,6 @@ def index():
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
