@@ -3,6 +3,8 @@ const { connectDB } = require("./Database/db.js"); // Import connectDB function 
 const routes = require("./routes/building.routes.js");
 const cameraRoutes = require("./routes/camera.route.js");
 const bodyParser = require("body-parser");
+var cors = require('cors');
+
 
 require("dotenv").config();
 
@@ -11,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
+app.use(cors())
 
 // Route
 app.get("/", (req, res) => {
