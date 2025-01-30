@@ -21,7 +21,7 @@ tracker = DeepSort(
 )
 
 # Constants for Entry/Exit Zones
-TOP_REGION = 0.2  # 20% from the top of the frame
+TOP_REGION = 0.4  # 40% from the top of the frame
 
 # Tracking Data
 trajectories = {}
@@ -33,7 +33,7 @@ base_url = "http://localhost:3000/"
 addPeople = "building/people/add/"
 removePeople = "building/people/remove/"
 building = "bat A/"
-camera = "camera1"
+camera = "camera2"
 
 rslt = requests.post(base_url + "building/list")
 print(rslt.content.decode())
@@ -41,7 +41,7 @@ print(rslt.content.decode())
 
 def generate_frames():
     global entered_count, exited_count
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
