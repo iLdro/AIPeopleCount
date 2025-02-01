@@ -14,7 +14,7 @@ async function getAllLogsForBasement(building) {
     if (logs) {
         return logs;
     }
-    else []
+    else[]
 }
 
 async function AddingPeopleInBasement(cameraId, buildingId) {
@@ -35,7 +35,7 @@ async function AddingPeopleInBasement(cameraId, buildingId) {
     let newBuilding = new Building({
         buildingId,
         counter: people,
-        cameraId : cameraId,
+        cameraId: cameraId,
         lastUpdated: date
     });
 
@@ -49,7 +49,7 @@ async function RemovingPeopleInBasement(cameraId, buildingId) {
     console.log("Remove for building id:", buildingId);
     let people = 0;
     let building = await Building.findOne({ buildingId }).sort({ lastUpdated: -1 }).exec();
-    if (!building || building.counter <=0 ) {
+    if (!building || building.counter <= 0) {
         people = 0; // Set people count to 0 if it's a new basement
     } else if (building.counter > 0) {
         people = building.counter - 1;
@@ -60,7 +60,7 @@ async function RemovingPeopleInBasement(cameraId, buildingId) {
     let newBuilding = new Building({
         buildingId,
         counter: people,
-        cameraId : cameraId,
+        cameraId: cameraId,
         lastUpdated: date
     });
 
@@ -108,11 +108,28 @@ async function updateBuildingIds() {
     }
 }
 
+
+async function getDistincCameraInBuilding(buildingId) {
+    console.log('retrived building id:', buildingId);
+    try {
+        let cameras = await Building.find({ buildingId: buildingId })
+            .distinct('cameraId')
+            .exec();
+        console.log('Distinct cameras:', cameras);
+        return cameras; // Return the result to the caller
+    }
+    catch (error) {
+        console.error('Error getting the distinct camera:', error);
+        return []; // Return an empty array in case of an error
+    }
+}
+
 module.exports = {
     AddingPeopleInBasement,
     RemovingPeopleInBasement,
     getPeopleInBasement,
     getDistinctBuilding,
     updateBuildingIds,
-    getAllLogsForBasement
+    getAllLogsForBasement,
+    getDistincCameraInBuilding
 };
