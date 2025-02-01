@@ -26,22 +26,19 @@ export default function App() {
 
   return (
     <>
-      <div>
-        <select
-          name="building"
-          id="building"
-          value={selectedBuilding}
-          onChange={(e) => handleBuildingChange(e.target.value)}
-        >
-          <option value="">Select a building</option>
-          {buildingsOptions.map((building) => {
-            return <option key={building} value={building}>{building}</option>
-          })}
-        </select>
+      <select
+        value={selectedBuilding}
+        onChange={(e) => handleBuildingChange(e.target.value)}
+      >
+        <option value="">Select a building</option>
+        {buildingsOptions.map((building) => (
+          <option key={building} value={building}>
+            {building}
+          </option>
+        ))}
+      </select>
 
-        {selectedBuilding && <BuildingCard buildingName={selectedBuilding} />}
-      </div>
-
+      {selectedBuilding && <BuildingCard buildingName={selectedBuilding} />}
     </>
   )
 }
