@@ -1,4 +1,6 @@
 export interface building {
-    id: string;
-    name: string;
+    buildingId: string;
+    cameraId: string;
+    counter: number;
+    lastUpdated: Date;
 }
