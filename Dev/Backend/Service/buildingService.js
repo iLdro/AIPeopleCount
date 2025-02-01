@@ -1,8 +1,8 @@
 const { Building } = require('../Schema/building.js');
 
-function getPeopleInBasement(buildingId) {
+async function getPeopleInBasement(buildingId) {
     let people = 0;
-    let building = Building.findOne({ buildingId: buildingId });
+    let building = await Building.findOne({ buildingId }).sort({ lastUpdated: -1 }).exec();
     if (building) {
         people = building.counter;
     }
@@ -72,6 +72,33 @@ async function getDistinctBuilding() {
     }
 }
 
+async function updateBuildingIds() {
+    try {
+        const result = await Building.updateMany(
+            { buildingId: "bat A" },
+            { $set: { buildingId: "batA" } }
+        );
+        
+        // If you need to update multiple patterns, you can chain them
+        const result2 = await Building.updateMany(
+            { buildingId: "bat B" },
+            { $set: { buildingId: "batB" } }
+        );
+        
+        return {
+            firstUpdate: result,
+            secondUpdate: result2
+        };
+    } catch (error) {
+        console.error('Error updating building IDs:', error);
+        throw error;
+    }
+}
 
-
-module.exports = { AddingPeopleInBasement , RemovingPeopleInBasement, getPeopleInBasement, getDistinctBuilding };
+module.exports = { 
+    AddingPeopleInBasement, 
+    RemovingPeopleInBasement, 
+    getPeopleInBasement, 
+    getDistinctBuilding, 
+    updateBuildingIds 
+};
