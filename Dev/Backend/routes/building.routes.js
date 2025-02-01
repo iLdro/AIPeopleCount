@@ -8,8 +8,15 @@ myController.get('/hello', (req, res) => {
     res.send({ express: 'Hello From Express' });
 });
 
-myController.get(':id/people', (req, res) => {
-    res.send(buildingService.getPeopleInBasement(req.params.id));
+myController.get('/:id/people', async (req, res) => {
+    try {
+        const peoples = await buildingService.getPeopleInBasement(req.params.id);
+        console.log("People in basement:", peoples);
+        res.send({ count: peoples });
+    } catch (error) {
+        console.error('Error getting people count:', error);
+        res.status(500).send({ error: 'Failed to get people count' });
+    }
 });
 
 myController.post('/people/add/:id', (req, res) => {
@@ -27,6 +34,19 @@ myController.get('/list', async (req, res) => {
     } catch (error) {
         console.error('Error fetching distinct buildings:', error);
         res.status(500).send({ error: 'Failed to fetch distinct buildings' });
+    }
+});
+
+myController.post('/update-building-ids', async (req, res) => {
+    try {
+        const result = await buildingService.updateBuildingIds();
+        res.status(200).json({
+            message: 'Building IDs updated successfully',
+            result: result
+        });
+    } catch (error) {
+        console.error('Error in update-building-ids route:', error);
+        res.status(500).json({ error: 'Failed to update building IDs' });
     }
 });
 

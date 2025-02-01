@@ -12,14 +12,8 @@ export default function App() {
 
   const fetchBuildings = async () => {
     const response = await axios.get('http://localhost:3000/building/list')
-    console.log(response)
+    console.log(response.data)
     setBuildingsOptions(response.data)
-  }
-
-  const renderBuildingCard = () => {
-    if (selectedBuilding) {
-      return <BuildingCard selectedBuilding={selectedBuilding} />
-     }
   }
 
   useEffect(() => {
@@ -45,7 +39,7 @@ export default function App() {
           })}
         </select>
 
-        {renderBuildingCard()}
+        {selectedBuilding && <BuildingCard buildingName={selectedBuilding} />}
       </div>
 
     </>
