@@ -60,4 +60,16 @@ myController.post('/update-building-ids', async (req, res) => {
     }
 });
 
+myController.get('/cameras/:id', async (req, res) => {
+    console.log('Retrieving distinct cameras for building:', req.params.id);
+    try {
+        const cameras = await buildingService.getDistincCameraInBuilding(req.params.id);
+        res.status(200).json(cameras); // Use `.json()` for structured response
+    } catch (error) {
+        console.error('Error fetching distinct cameras:', error);
+        res.status(500).json({ error: 'Failed to fetch distinct cameras' });
+    }
+});
+
+
 module.exports = myController;
