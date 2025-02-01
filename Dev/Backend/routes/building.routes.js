@@ -37,6 +37,16 @@ myController.get('/list', async (req, res) => {
     }
 });
 
+myController.get('/allLogs/:id', async (req, res) => {
+    try {
+        const building = await buildingService.getAllLogsForBasement(req.params.id);
+        res.status(200).send(building); // Send the retrieved building to the client
+    } catch (error) {
+        console.error('Error fetching building:', error);
+        res.status(500).send({ error: 'Failed to fetch building' });
+    }
+});
+
 myController.post('/update-building-ids', async (req, res) => {
     try {
         const result = await buildingService.updateBuildingIds();

@@ -9,6 +9,14 @@ async function getPeopleInBasement(buildingId) {
     return people;
 }
 
+async function getAllLogsForBasement(building) {
+    let logs = await Building.find({ buildingId: building })
+    if (logs) {
+        return logs;
+    }
+    else []
+}
+
 async function AddingPeopleInBasement(cameraId, buildingId) {
     console.log("Add for building id:", buildingId);
     let building = await Building.findOne({ buildingId }).sort({ lastUpdated: -1 }).exec();
@@ -78,13 +86,13 @@ async function updateBuildingIds() {
             { buildingId: "bat A" },
             { $set: { buildingId: "batA" } }
         );
-        
+
         // If you need to update multiple patterns, you can chain them
         const result2 = await Building.updateMany(
             { buildingId: "bat B" },
             { $set: { buildingId: "batB" } }
         );
-        
+
         return {
             firstUpdate: result,
             secondUpdate: result2
@@ -95,10 +103,11 @@ async function updateBuildingIds() {
     }
 }
 
-module.exports = { 
-    AddingPeopleInBasement, 
-    RemovingPeopleInBasement, 
-    getPeopleInBasement, 
-    getDistinctBuilding, 
-    updateBuildingIds 
+module.exports = {
+    AddingPeopleInBasement,
+    RemovingPeopleInBasement,
+    getPeopleInBasement,
+    getDistinctBuilding,
+    updateBuildingIds,
+    getAllLogsForBasement
 };
