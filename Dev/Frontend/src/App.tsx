@@ -1,33 +1,40 @@
 import axios from 'axios'
-import { building } from './type/types'
 import { useEffect, useState } from 'react'
+import { BuildingCard } from './Components/BuildingCard'
 
 export default function App() {
-  const [buildingsOptions, setBuildingsOptions] = useState<building[]>([])
-  const [selectedBuilding, setSelectedBuilding] = useState<building>()
+  const [buildingsOptions, setBuildingsOptions] = useState<string[]>([])
+  const [selectedBuilding, setSelectedBuilding] = useState<string>()
 
   useEffect(() => {
     fetchBuildings()
   }, [])
 
   const fetchBuildings = async () => {
-    const response = await axios.get('http://localhost:3000/building/building')
-    console.log(response)
+    const response = await axios.get('http://localhost:3000/building/list')
+    console.log(response.data)
     setBuildingsOptions(response.data)
   }
 
-  const handleBuildingChange = (value: building) => {
+  const handleBuildingChange = (value: string) => {
     setSelectedBuilding(value)
   }
 
   return (
     <>
-      <select name="" id="">
-        {buildingsOptions.map((building) => {
-          return <option key={building.id} value={building.id} onClick={() => handleBuildingChange(building)}>{building.name}</option>
-        })}
+      <select 
+        value={selectedBuilding} 
+        onChange={(e) => handleBuildingChange(e.target.value)}
+      >
+        <option value="">Select a building</option>
+        {buildingsOptions.map((building) => (
+          <option key={building} value={building}>
+            {building}
+          </option>
+        ))}
       </select>
 
+      {selectedBuilding && <BuildingCard buildingName={selectedBuilding} />}
     </>
   )
 }
