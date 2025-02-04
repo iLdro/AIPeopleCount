@@ -7,9 +7,17 @@ async function CameraUpdate(cameraId, people) {
 }
 
 async function getCameraPeople(cameraId) {
-    let camera = await Camera.findOne({ cameraId: cameraId }, { _id: 0, __v: 0 }).sort({ lastUpdated: -1 });
-    console.log('getCameraPeople', camera); // This line is not needed
-    return camera ? camera.actualOnCamera : null;
+    const camera = await Camera.findOne(
+        { cameraId: cameraId },
+        { _id: 0, __v: 0 }
+    ).sort({ lastUpdated: -1 });
+
+    if (!camera) {
+        return { actual: 0 }; // Retourne 0 si aucune donnée trouvée
+    }
+
+    return  camera.actualOnCamera ;
 }
+
 
 module.exports = { CameraUpdate, getCameraPeople };
