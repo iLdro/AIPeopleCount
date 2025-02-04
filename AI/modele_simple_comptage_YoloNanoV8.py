@@ -45,7 +45,7 @@ print(rslt.content.decode())
 
 def generate_frames():
     global entered_count, exited_count
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
@@ -128,7 +128,7 @@ def generate_frames():
         # Display the number of people in the camera field
         cv2.putText(frame, f"People in View: {len(current_ids)}", (10, 150),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-                    
+
         requests.post(base_url + peopleOnCamera + camera, json={"people": len(current_ids)})
 
         # Encode and send frame to the client
