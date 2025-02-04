@@ -12,18 +12,18 @@ export const CameraCard: React.FC<CameraCardProps> = ({ cameraId }) => {
     const [error, setError] = useState<boolean>(false);
 
     const fetchCameraPeopleCount = async (isFirstLoad = false) => {
-        console.log("called");
-        try {
-            if (isFirstLoad) setLoading(true); // Only show loading on first fetch
-            console.log("trying to fetch");
-            const response = await axios.get(`http://localhost:3000/camera/${cameraId}`);
-            console.log("Successful fetch:", response.data);
-            setCameraPeopleCount(response.data.count);
+        try {fetch
+            if (isFirstLoad) setLoading(true);
+            console.log("trying to fetch", cameraId);
+            const response = await axios.get(`http://localhost:3000/camera/${cameraId}/peoples`);
+            console.log("fetched camera " + response);
+            setCameraPeopleCount(response.data);
             setError(false);
         } catch (err) {
             setError(true);
             console.error("Error fetching camera people count:", err);
         } finally {
+            console.log("finally");
             if (isFirstLoad) setLoading(false);
         }
     };
