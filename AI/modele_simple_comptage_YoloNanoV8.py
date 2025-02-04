@@ -28,6 +28,7 @@ TOP_REGION = 0.4  # 40% from the top of the frame
 trajectories = {}
 entered_count = 0
 exited_count = 0
+last_change_id = 0
 
 # API Configuration
 base_url = "http://localhost:3000/"
@@ -129,14 +130,16 @@ def generate_frames():
         cv2.putText(frame, f"People in View: {len(current_ids)}", (10, 150),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
 
-        requests.post(base_url + peopleOnCamera + camera, json={"people": len(current_ids)})
-
         # Encode and send frame to the client
         _, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
 
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+        if last_change_id != len(current_ids):
+            last_change_id = len(current_ids)
+            requests.post(base_url + peopleOnCamera + camera, json={"people": len(current_ids)})
 
     cap.release()
 
