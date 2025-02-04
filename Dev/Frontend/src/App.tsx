@@ -12,14 +12,6 @@ export default function App() {
     fetchBuildings()
   }, [])
 
-
-  useEffect(() => {
-    if (selectedBuilding) {
-      fetchCameraFromBuilding(selectedBuilding)
-    }
-  }, [selectedBuilding])
-
-
   const fetchCameraFromBuilding = async (building: string) => {
     console.log("fetching camera from building " + building)
     try {
@@ -54,19 +46,22 @@ export default function App() {
   }
 
   return (
-    <>
-      <div>
-        <select
-          name="building"
-          id="building"
-          value={selectedBuilding}
-          onChange={(e) => handleBuildingChange(e.target.value)}
-        >
-          <option value="">Select a building</option>
-          {buildingsOptions.map((building) => {
-            return <option key={building} value={building}>{building}</option>
-          })}
-        </select>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8 text-center">
+          <select
+            value={selectedBuilding}
+            onChange={(e) => handleBuildingChange(e.target.value)}
+            className="w-64 p-3 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          >
+            <option value="" className="text-gray-500">Select a building</option>
+            {buildingsOptions.map((building) => (
+              <option key={building} value={building} className="text-gray-700">
+                {building}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {selectedBuilding && <BuildingCard buildingName={selectedBuilding} />}
         {selectedBuilding && (
@@ -77,7 +72,6 @@ export default function App() {
           </div>
         )}
       </div>
-
-    </>
+    </div>
   )
 }
