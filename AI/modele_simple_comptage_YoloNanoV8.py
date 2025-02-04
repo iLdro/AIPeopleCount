@@ -34,7 +34,7 @@ base_url = "http://localhost:3000/"
 peopleOnCamera = "camera/"
 addPeople = "building/people/add/"
 removePeople = "building/people/remove/"
-building = "bat A/"
+building = "batA/"
 camera = "camera2"
 
 rslt = requests.post(base_url + "building/list")
@@ -45,7 +45,7 @@ print(rslt.content.decode())
 
 def generate_frames():
     global entered_count, exited_count
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
@@ -77,7 +77,6 @@ def generate_frames():
             x1, y1, x2, y2 = map(int, track.to_tlbr())
             y_center = (y1 + y2) // 2  # Y-coordinate of the center
             current_ids.add(track_id)
-            requests.post(base_url + peopleOnCamera + camera, json={"people": len(current_ids)})
 
             # Initialize trajectory for new IDs
             if track_id not in trajectories:
@@ -129,6 +128,8 @@ def generate_frames():
         # Display the number of people in the camera field
         cv2.putText(frame, f"People in View: {len(current_ids)}", (10, 150),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+                    
+        requests.post(base_url + peopleOnCamera + camera, json={"people": len(current_ids)})
 
         # Encode and send frame to the client
         _, buffer = cv2.imencode('.jpg', frame)
