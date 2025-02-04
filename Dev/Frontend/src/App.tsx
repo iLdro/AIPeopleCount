@@ -2,8 +2,13 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BuildingCard } from './Components/BuildingCard'
 import { CameraCard } from './Components/CameraCard'
+import { BuildingCard } from './Components/BuildingCard'
+import { CameraCard } from './Components/CameraCard'
 
 export default function App() {
+  const [buildingsOptions, setBuildingsOptions] = useState<string[]>([])
+  const [selectedBuilding, setSelectedBuilding] = useState<string>('')
+  const [cameras, setCameras] = useState<any[]>([])
   const [buildingsOptions, setBuildingsOptions] = useState<string[]>([])
   const [selectedBuilding, setSelectedBuilding] = useState<string>('')
   const [cameras, setCameras] = useState<any[]>([])
@@ -30,12 +35,38 @@ export default function App() {
   }, [selectedBuilding])
 
 
+  const fetchCameraFromBuilding = async (building: string) => {
+    console.log("fetching camera from building " + building)
+    try {
+      const response = await axios.get(`http://localhost:3000/building/cameras/${building}`)
+      console.log("fetched camera " + response.data)
+      setCameras(response.data)
+    } catch (error) {
+      console.error("Error fetching camera from building:", error)
+    }
+  }
+
+  useEffect(() => {
+    if (selectedBuilding) {
+      fetchCameraFromBuilding(selectedBuilding)
+    }
+  }, [selectedBuilding])
+
+
   const fetchBuildings = async () => {
+    const response = await axios.get('http://localhost:3000/building/list')
+    console.log(response.data)
     const response = await axios.get('http://localhost:3000/building/list')
     console.log(response.data)
     setBuildingsOptions(response.data)
   }
 
+
+  useEffect(() => {
+    console.log("selected " + selectedBuilding)
+  }, [selectedBuilding])
+
+  const handleBuildingChange = (value: string) => {
 
   useEffect(() => {
     console.log("selected " + selectedBuilding)
