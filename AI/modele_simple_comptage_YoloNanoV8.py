@@ -31,6 +31,7 @@ exited_count = 0
 
 # API Configuration
 base_url = "http://localhost:3000/"
+peopleOnCamera = "camera/"
 addPeople = "building/people/add/"
 removePeople = "building/people/remove/"
 building = "bat A/"
@@ -76,6 +77,7 @@ def generate_frames():
             x1, y1, x2, y2 = map(int, track.to_tlbr())
             y_center = (y1 + y2) // 2  # Y-coordinate of the center
             current_ids.add(track_id)
+            requests.post(base_url + peopleOnCamera + camera, json={"people": len(current_ids)})
 
             # Initialize trajectory for new IDs
             if track_id not in trajectories:
