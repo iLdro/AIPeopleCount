@@ -28,28 +28,36 @@ interface BuildingCardProps {
 }
 
 export const BuildingCard: React.FC<BuildingCardProps> = ({ buildingName }) => {
-    const [buildngPeopleCount, setBuildingPeopleCount] = useState<number>(0)
-    const [buildingData, setBuildingData] = useState<building[]>([])
+    const [buildngPeopleCount, setBuildingPeopleCount] = useState<number>(0);
+    const [buildingData, setBuildingData] = useState<building[]>([]);
 
     const fetchBuildingPeopleCount = async () => {
-        const response = await axios.get(`http://localhost:3000/building/${buildingName}/people`)
-        console.log(response.data.count)
-        setBuildingPeopleCount(response.data.count)
-    }
+        try {
+            const response = await axios.get(`http://localhost:3000/building/${buildingName}/people`);
+            setBuildingPeopleCount(response.data.count);
+        } catch (error) {
+            console.error("Error fetching people count:", error);
+        }
+    };
 
-    const fetchhBuildingData = async () => {
-        const response = await axios.get(`http://localhost:3000/building/allLogs/${buildingName}`)
-        setBuildingData(response.data)
-    }
+    const fetchBuildingData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/building/allLogs/${buildingName}`);
+            setBuildingData(response.data);
+        } catch (error) {
+            console.error("Error fetching building data:", error);
+        }
+    };
 
     useEffect(() => {
         fetchBuildingPeopleCount();
-        fetchhBuildingData();
-    }, [buildingName])
-
-    useEffect(() => {
-        console.log(buildingData)
-    }, [buildingData])
+        fetchBuildingData();
+        const interval = setInterval(() => {
+            fetchBuildingPeopleCount();
+            fetchBuildingData();
+        }, 500);
+        return () => clearInterval(interval);
+    }, [buildingName]);
 
     const chartData = {
         labels: buildingData.map(data => new Date(data.lastUpdated).toLocaleTimeString()),
@@ -101,5 +109,5 @@ export const BuildingCard: React.FC<BuildingCardProps> = ({ buildingName }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
