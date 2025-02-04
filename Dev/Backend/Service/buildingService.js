@@ -10,16 +10,13 @@ function getPeopleInBasement(buildingId) {
 }
 
 async function AddingPeopleInBasement(cameraId, buildingId) {
-
+    console.log("Add for building id:", buildingId);
     let building = await Building.findOne({ buildingId }).sort({ lastUpdated: -1 }).exec();
-
-    console.log("retrieved building:", building);
 
     if (!building) {
         people = 0; // Set people count to 0 if it's a new basement
     } else {
         people = building.counter + 1;
-        console.log("People in basement:", people);
     }
 
     let date = new Date();
@@ -31,7 +28,6 @@ async function AddingPeopleInBasement(cameraId, buildingId) {
         lastUpdated: date
     });
 
-    console.log("New building:", newBuilding);
 
     return await newBuilding.save().catch(error => console.error('Error updating the building:', error));
 }
@@ -59,7 +55,6 @@ async function RemovingPeopleInBasement(cameraId, buildingId) {
 
     await newBuilding.save().catch(error => console.error('Error updating the building:', error));
 
-    console.log('People in basement:', people);
     return people;
 }
 
